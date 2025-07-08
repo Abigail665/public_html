@@ -1,0 +1,38 @@
+/*
+	tswnavbar.css	2.0.0
+	Please use the Navigation Menu Wizard at
+		https://www.thesitewizard.com/wizards/css-menu-buttons.shtml
+	to generate your own customized menu buttons.
+*/
+
+#tswcssbuttons {
+	width: 180px ;
+	max-width: 100% ;
+	text-align: center ;
+}
+#tswcssbuttons ul {
+	margin: 0 ;
+	padding: 0 ;
+	list-style: none ;
+}
+#tswcssbuttons li {
+	margin: 0 0 10px 0 ; /* Add some space between the buttons */
+	padding: 0 ;
+	display: block ;
+	list-style: none ;
+	font-family: Arial, Helvetica, sans-serif ;
+}
+#tswcssbuttons li a {
+	color: #e0cbb9; /* Change text to white for better contrast */
+	background-color: #754b4d ;
+	border: 1px solid #4e3234; /* Use a more subtle, solid border */
+	text-decoration: none ;
+	display: block ;
+	padding: 20px 0; /* Add some vertical padding for a taller button */
+	border-radius: 25px; /* This is the magic property for rounded corners! */
+	transition: background-color 0.3s; /* Add a smooth transition for the hover effect */
+}
+#tswcssbuttons li a:hover {
+	color: #e0cbb9;
+	background-color: #9c6b6e; /* Lighten the button on hover for a clear effect */
+}
