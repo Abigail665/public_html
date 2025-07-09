@@ -92,50 +92,23 @@ div#tswfooter {
 	height:300px;
 }
 
-
-.welcomesign {
-	width: 800px;
-	height: auto; /* Let height adjust to maintain aspect ratio */
-	max-width: 100%; /* Make image responsive */
-	display: block;
-	margin: 0 auto; /* Center the image horizontally */
-}
-
-.projecttitle {
-	width: 600px;
-	height: auto; 
-	max-width: 100%; 
-	display: block;
-	margin: 0 auto; 
-}
-
-.aboutme {
-	width: 600px;
-	height: auto; 
-	max-width: 100%; 
-	display: block;
-	margin: 0 auto; 
-}
-
-/* --- Two-Column Layout for About Me Page --- */
-.columns-container {
-	display: flex;
-	gap: 20px; /* Adds space between the columns */
-	margin-top: 20px; /* Adds space above the columns */
-	text-align: center; /* Center the text inside the columns, as you had before */
+ 
+   .columns-container {
+	display: flex; /* This enables Flexbox, arranging items in a row */
+	gap: 30px; /* This creates space between the columns */
+	margin-top: 20px; /* Add some space above the columns */
 }
 
 .column {
-	flex: 1; /* Each column will take up equal space */
+	flex: 1; /* This makes each column take up an equal amount of space */
 	padding: 15px;
-	border: 2px dashed #ab8882;
-	border-radius: 8px; /* Optional: adds rounded corners */
-	background-color: rgba(0, 0, 0, 0.05); /* A very subtle background to distinguish columns */
+	border: 1px solid #ab8882;
+	border-radius: 8px; /* Optional: for rounded corners */
+	text-align: center; /* Center the text inside the columns */
 }
 
-/* Make columns stack on smaller screens for responsiveness */
-@media only screen and (max-width: 768px) {
-	.columns-container {
-		flex-direction: column;
-	}
+.welcomesign {
+	width: 800px;
+	height: 300px;
+	float: center;
 }

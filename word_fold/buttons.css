@@ -1,0 +1,36 @@
+.button {
+    /* Using a sans-serif font consistent with other UI elements like the navbar */
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    
+    /* Reusing the color scheme from your navigation bar for consistency */
+    color: #f7dae7;
+    background-color: #d38c9d;
+    
+    /* Adding padding, border, and rounded corners for a modern button look */
+    padding: 30px 60px;
+    border: 1px solid #a55166;
+    border-radius: 25px; /* Same rounding as your navbar buttons */
+    
+    /* Standard properties for button-like elements */
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none; /* Removes underline if used on an <a> tag */
+    display: inline-block; /* Allows padding and margins to be applied */
+    margin: 5px; /* Adds a little space around the button */
+
+    /* A smooth transition for the hover effect */
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.button:hover, .button:focus {
+    /* A slightly lighter background on hover, just like your navbar */
+    background-color: #e2b4c1;
+    outline: none; /* Removes the default browser outline on focus */
+}
+
+.button:active {
+    /* A subtle "press" effect when the button is clicked */
+    transform: translateY(1px);
+}
