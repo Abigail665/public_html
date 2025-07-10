@@ -2,120 +2,35 @@
 <html lang="en">
 
 <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <title>Word Fold</title>
-  <link href="game.css" rel="stylesheet">
-  <script src="game.js" defer></script>
-</head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title class="header">Word Fold</title>
+    <link href="game.css" rel="stylesheet">
+    <link href="buttons.css" rel="stylesheet">
+    <script src="game.js" defer></script>
+  </head>
 
-<body>
-  <div class="header">
-    <h1 class="no-margin">Word Fold</h1>
+<body class= "body">
+  <style>
+    .body{
+      background-color: #ecaac2;
+    }
+  </style>
+    <div class="header">
+     <h1 class="no-margin">Word Fold</h1>
   </div>
-  <div id="cell-holder" class="cell-holder">
-    <div class="cell" onclick="on_click(0,0)"></div>
-    <div class="cell" onclick="on_click(1,0)"></div>
-    <div class="cell" onclick="on_click(2,0)"></div>
-    <div class="cell" onclick="on_click(3,0)"></div>
-    <div class="cell" onclick="on_click(4,0)"></div>
-    <div class="cell" onclick="on_click(5,0)"></div>
-    <div class="cell" onclick="on_click(6,0)"></div>
-    <div class="cell" onclick="on_click(7,0)"></div>
-    <div class="cell" onclick="on_click(8,0)"></div>
-    <div class="cell" onclick="on_click(9,0)"></div>
-    <div class="cell" onclick="on_click(0,1)"></div>
-    <div class="cell" onclick="on_click(1,1)"></div>
-    <div class="cell" onclick="on_click(2,1)"></div>
-    <div class="cell" onclick="on_click(3,1)"></div>
-    <div class="cell" onclick="on_click(4,1)"></div>
-    <div class="cell" onclick="on_click(5,1)"></div>
-    <div class="cell" onclick="on_click(6,1)"></div>
-    <div class="cell" onclick="on_click(7,1)"></div>
-    <div class="cell" onclick="on_click(8,1)"></div>
-    <div class="cell" onclick="on_click(9,1)"></div>
-    <div class="cell" onclick="on_click(0,2)"></div>
-    <div class="cell" onclick="on_click(1,2)"></div>
-    <div class="cell" onclick="on_click(2,2)"></div>
-    <div class="cell" onclick="on_click(3,2)"></div>
-    <div class="cell" onclick="on_click(4,2)"></div>
-    <div class="cell" onclick="on_click(5,2)"></div>
-    <div class="cell" onclick="on_click(6,2)"></div>
-    <div class="cell" onclick="on_click(7,2)"></div>
-    <div class="cell" onclick="on_click(8,2)"></div>
-    <div class="cell" onclick="on_click(9,2)"></div>
-    <div class="cell" onclick="on_click(0,3)"></div>
-    <div class="cell" onclick="on_click(1,3)"></div>
-    <div class="cell" onclick="on_click(2,3)"></div>
-    <div class="cell" onclick="on_click(3,3)"></div>
-    <div class="cell" onclick="on_click(4,3)"></div>
-    <div class="cell" onclick="on_click(5,3)"></div>
-    <div class="cell" onclick="on_click(6,3)"></div>
-    <div class="cell" onclick="on_click(7,3)"></div>
-    <div class="cell" onclick="on_click(8,3)"></div>
-    <div class="cell" onclick="on_click(9,3)"></div>
-    <div class="cell" onclick="on_click(0,4)"></div>
-    <div class="cell" onclick="on_click(1,4)"></div>
-    <div class="cell" onclick="on_click(2,4)"></div>
-    <div class="cell" onclick="on_click(3,4)"></div>
-    <div class="cell" onclick="on_click(4,4)"></div>
-    <div class="cell" onclick="on_click(5,4)"></div>
-    <div class="cell" onclick="on_click(6,4)"></div>
-    <div class="cell" onclick="on_click(7,4)"></div>
-    <div class="cell" onclick="on_click(8,4)"></div>
-    <div class="cell" onclick="on_click(9,4)"></div>
-    <div class="cell" onclick="on_click(0,5)"></div>
-    <div class="cell" onclick="on_click(1,5)"></div>
-    <div class="cell" onclick="on_click(2,5)"></div>
-    <div class="cell" onclick="on_click(3,5)"></div>
-    <div class="cell" onclick="on_click(4,5)"></div>
-    <div class="cell" onclick="on_click(5,5)"></div>
-    <div class="cell" onclick="on_click(6,5)"></div>
-    <div class="cell" onclick="on_click(7,5)"></div>
-    <div class="cell" onclick="on_click(8,5)"></div>
-    <div class="cell" onclick="on_click(9,5)"></div>
-    <div class="cell" onclick="on_click(0,6)"></div>
-    <div class="cell" onclick="on_click(1,6)"></div>
-    <div class="cell" onclick="on_click(2,6)"></div>
-    <div class="cell" onclick="on_click(3,6)"></div>
-    <div class="cell" onclick="on_click(4,6)"></div>
-    <div class="cell" onclick="on_click(5,6)"></div>
-    <div class="cell" onclick="on_click(6,6)"></div>
-    <div class="cell" onclick="on_click(7,6)"></div>
-    <div class="cell" onclick="on_click(8,6)"></div>
-    <div class="cell" onclick="on_click(9,6)"></div>
-    <div class="cell" onclick="on_click(0,7)"></div>
-    <div class="cell" onclick="on_click(1,7)"></div>
-    <div class="cell" onclick="on_click(2,7)"></div>
-    <div class="cell" onclick="on_click(3,7)"></div>
-    <div class="cell" onclick="on_click(4,7)"></div>
-    <div class="cell" onclick="on_click(5,7)"></div>
-    <div class="cell" onclick="on_click(6,7)"></div>
-    <div class="cell" onclick="on_click(7,7)"></div>
-    <div class="cell" onclick="on_click(8,7)"></div>
-    <div class="cell" onclick="on_click(9,7)"></div>
-    <div class="cell" onclick="on_click(0,8)"></div>
-    <div class="cell" onclick="on_click(1,8)"></div>
-    <div class="cell" onclick="on_click(2,8)"></div>
-    <div class="cell" onclick="on_click(3,8)"></div>
-    <div class="cell" onclick="on_click(4,8)"></div>
-    <div class="cell" onclick="on_click(5,8)"></div>
-    <div class="cell" onclick="on_click(6,8)"></div>
-    <div class="cell" onclick="on_click(7,8)"></div>
-    <div class="cell" onclick="on_click(8,8)"></div>
-    <div class="cell" onclick="on_click(9,8)"></div>
-    <div class="cell" onclick="on_click(0,9)"></div>
-    <div class="cell" onclick="on_click(1,9)"></div>
-    <div class="cell" onclick="on_click(2,9)"></div>
-    <div class="cell" onclick="on_click(3,9)"></div>
-    <div class="cell" onclick="on_click(4,9)"></div>
-    <div class="cell" onclick="on_click(5,9)"></div>
-    <div class="cell" onclick="on_click(6,9)"></div>
-    <div class="cell" onclick="on_click(7,9)"></div>
-    <div class="cell" onclick="on_click(8,9)"></div>
-    <div class="cell" onclick="on_click(9,9)"></div>
+
+  <!-- A standard div to hold our buttons. We'll style this next. -->
+  <div class="button-container">
+     <button onclick="load_board(0)" class="button">Colors</button>
+     <button onclick="load_board(1)" class="button">Animals</button>
+     <button onclick="load_board(2)" class="button">Fruits</button>
   </div>
-  <div class="header" id="words"></div>
-  
+
+  <p id="words"> hello</p>
+
+  <div id="cell-holder">
+    <!-- The game board cells will be generated by game.js -->
+  </div>
 </body>
 
 </html>
