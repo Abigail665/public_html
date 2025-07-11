@@ -1,22 +1,49 @@
 const widget_container = document.getElementById("widget-container");
+const notification_container = document.getElementById("notification-container");
 const stores = document.getElementsByClassName("store");
 const score_element = document.getElementById("score");
-let score = 5;
-let super_gompei_count = 0;
+
+const achievements = {
+    greenThumb: {
+        name: "Green Thumb",
+        description: "Earn a total of 10,000 sqft.",
+        unlocked: false,
+        condition: (state) => state.score >= 10000,
+    },
+    masterGardener: {
+        name: "Master Gardener",
+        description: "Earn a total of 1,000,000 sqft.",
+        unlocked: false,
+        condition: (state) => state.score >= 1000000,
+    },
+    gompeiArmy: {
+        name: "Gompei's Army",
+        description: "Own 10 Gompeis.",
+        unlocked: false,
+        // Check for undefined in case no Gompeis are owned yet
+        condition: (state) => (state.widgets.Gompei || 0) >= 10,
+    },
+}
+
+let gameState = {
+    score: 5,
+    widgets: {},
+}
 
 function changeScore(amount) {
-    score += amount;
+    gameState.score += amount;
     updateUI(); // Centralize all UI updates
+    checkAchievements();
 }
 
 function updateUI() {
     // Update score element
-    score_element.innerHTML = "Score: " + score;
+    score_element.innerHTML = "Score: " + gameState.score;
 
     // Update store availability
     for (let store of stores) {
         let cost = parseInt(store.getAttribute("cost"));
-        if (score < cost) {
+        if (gameState.score < cost) {
             store.setAttribute("broke", "");
         } else {
             store.removeAttribute("broke");
@@ -39,7 +66,7 @@ function updateUI() {
         reapDisplay.textContent = `+${currentReap}`;
         upgradeBtn.textContent = `Upgrade (${upgradeCost})`;
 
-        if (score < upgradeCost) {
+        if (gameState.score < upgradeCost) {
             upgradeBtn.setAttribute("disabled", "");
         } else {
             upgradeBtn.removeAttribute("disabled");
@@ -50,7 +77,7 @@ function buy(store) {
     const cost = parseInt(store.getAttribute("cost"));
 
     // check available to buy
-    if (score < cost) return; // Exit if can't afford
+    if (gameState.score < cost) return; // Exit if can't afford
 
     // change score
     changeScore(-cost); // Use changeScore to keep UI in sync
@@ -64,8 +91,14 @@ function buy(store) {
         }
     }
 
-    super_gompei_count += 1;
-    document.body.style = "--gompei-count: " + super_gompei_count + ";"
+    // Track widget counts in our gameState
+    const name = store.getAttribute("name");
+    if (!gameState.widgets[name]) {
+        gameState.widgets[name] = 0;
+    }
+    gameState.widgets[name]++;
+
+    document.body.style.setProperty('--gompei-count', gameState.widgets['Super-Gompei'] || 0);
 
     // clone node for widget, and add to container
     const widget = store.firstElementChild.cloneNode(true);
@@ -101,7 +134,7 @@ function addUpgradeability(widget) {
         const currentReap = parseInt(widget.getAttribute("reap"));
         const upgradeCost = Math.ceil(currentReap * 5);
 
-        if (score < upgradeCost) return;
+        if (gameState.score < upgradeCost) return;
         changeScore(-upgradeCost);
         widget.setAttribute("reap", Math.ceil(currentReap * 1.2)); // Increase reap by 20%
         updateUI(); // Update all UI elements after the change
@@ -116,7 +149,8 @@ function setup_end_harvest(widget) {
         if (widget.getAttribute("auto") == 'true') {
             harvest(widget);
         }
-    }, parseFloat(widget.getAttribute("cooldown")) * 100);
+    // Cooldown needs to be multiplied by 1000 to convert seconds to milliseconds
+    }, parseFloat(widget.getAttribute("cooldown")) * 1000);
 }
 
 function harvest(widget) {
@@ -144,3 +178,27 @@ function showPoint(widget) {
 }
 
 updateUI(); // Initial call to set up the UI correctly on page load
+
+function showNotification(title, message) {
+    const notification = document.createElement("div");
+    notification.className = "notification";
+    notification.innerHTML = `<h4>${title}</h4><p>${message}</p>`;
+    notification_container.appendChild(notification);
+
+    // Remove the notification from the DOM after its animation finishes
+    setTimeout(() => {
+        notification.remove();
+    }, 4000); // Matches the animation duration
+}
+
+function checkAchievements() {
+    for (const key in achievements) {
+        const achievement = achievements[key];
+        // Check if the achievement condition is met and it hasn't been unlocked yet
+        if (!achievement.unlocked && achievement.condition(gameState)) {
+            achievement.unlocked = true;
+            console.log(`Achievement Unlocked: ${achievement.name}`);
+            showNotification("Achievement Unlocked!", achievement.name);
+        }
+    }
+}

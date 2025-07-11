@@ -12,7 +12,7 @@
 
 <body>
     <h1 class="center">Gompei's Grass Game</h1>
-    <h2 class="center" id="score">Score: 0</h2>
+    <h2 class="center" id="score">Score: 5</h2>
     <div id="store-container">
         <div class="store" name="Lawn" cost="5" onclick="buy(event.currentTarget)">
             <div class="widget" reap="2" cooldown="0.5" auto="false" name="Lawn">
@@ -28,7 +28,7 @@
             onclick="buy(event.currentTarget)">
             <div class="widget" reap="10" cooldown="2.0" auto="true" name="Gompei">
                 <img src="./gompei.png">
-                <div class="overlay-slide" style="animation-duration: 1s;"></div>
+                <div class="overlay-slide" style="animation-duration: 2s;"></div>
             </div>
             <p>Gompei</p>
             <p>15 points</p>
@@ -44,11 +44,13 @@
             <p>Super-Gompei</p>
             <p>150 points</p>
             <p>+100 sqft</p>
-            <p>3.0s</p>
+            <p>5.0s</p>
         </div>
     </div>
 
 <div id="widget-container"></div>
+
+<div id="notification-container"></div>
 
 </body>
 

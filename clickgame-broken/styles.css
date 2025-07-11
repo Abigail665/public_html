@@ -181,3 +181,51 @@ body {
     border-color: #333;
     cursor: not-allowed;
 }
+
+#notification-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.notification {
+    background-color: #2c2c2c;
+    color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 5px solid #6a3d9a;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    animation: slideInAndOut 4s forwards;
+    opacity: 0;
+    width: 250px;
+}
+
+.notification h4 {
+    margin: 0 0 5px 0;
+    color: #ffd700;
+}
+
+.notification p {
+    margin: 0;
+    font-size: 0.9em;
+}
+
+@keyframes slideInAndOut {
+    0%{
+        transform: translateX(120%);
+        opacity: 0;
+    }
+    15%, 85% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(120%);
+        opacity: 0;
+    }
+}
