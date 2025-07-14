@@ -1,0 +1,33 @@
+body {
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #121524;
+    color:#cee0f4
+}
+
+h1 {
+    font-size: 60px;
+    margin: 0;
+    color: #c0c9d8;
+}
+
+h3 {
+    margin: 0;
+    color: #c0c9d8;
+}
+
+#scoreboard {
+    font-size: 40px;
+    font-family: 'Courier New', Courier, monospace;
+    color: #c0c9d8;
+}
+
+#reset {
+    cursor: pointer;
+    border-radius: 15px;
+    width: 100px;
+    height: 50px;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #859fc0;
+    color: #193060;
+}
