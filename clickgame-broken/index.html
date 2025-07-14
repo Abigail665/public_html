@@ -24,6 +24,7 @@
             <p>+2 sqft</p>
             <p>0.5s</p>
         </div>
+
         <div class="store" name="Gompei" cost="15" reap="10" cooldown="2.0" auto="true" src="./gompei.png"
             onclick="buy(event.currentTarget)">
             <div class="widget" reap="10" cooldown="2.0" auto="true" name="Gompei">
@@ -35,6 +36,7 @@
             <p>+10 sqft</p>
             <p>2.0s</p>
         </div>
+
         <div class="store" name="Super-Gompei" cost="150" reap="100" cooldown="5.0" auto="true" src="./gompei.png"
             onclick="buy(event.currentTarget)">
             <div class="widget" reap="100" cooldown="5.0" auto="true" name="Super-Gompei">
@@ -46,6 +48,59 @@
             <p>+100 sqft</p>
             <p>5.0s</p>
         </div>
+
+        <div class="store" name="Fertilizer" cost="1000"
+             data-type="booster"
+             data-boost-target="Lawn"
+             data-boost-amount="0.25"
+             onclick="buy(event.currentTarget)">
+            <div class="widget">
+                <p style="font-size: 2em; margin-top: 10px;">🌿</p>
+            </div>
+            <p>Fertilizer</p>
+            <p>1000 points</p>
+            <p>Boosts Lawns by 25%</p>
+            <p>(Permanent)</p>
+        </div>
+
+        <div class="store" name="Extra-energy" cost="10000"
+             data-type="booster"
+             data-boost-target="Gompei"
+             data-boost-amount="0.5"
+             onclick="buy(event.currentTarget)">
+            <div class="widget">
+                <p style="font-size: 2em; margin-top: 10px;">⚡</p>
+            </div>
+            <p>Extra-Energy</p>
+            <p>10000 points</p>
+            <p>Boosts Gompeis by 50%</p>
+            <p>(Permanent)</p>
+       </div>
+
+       <div class="store" name="Lawnmower" cost="5000"
+             data-type="booster"
+             data-boost-target="Lawn"
+             data-boost-amount="0.5"
+             onclick="buy(event.currentTarget)">
+            <div class="widget">
+                <p style="font-size: 2em; margin-top: 10px;">✂️</p>
+            </div>
+            <p>Lawnmower</p>
+            <p>5000 points</p>
+            <p>Boosts Lawns by 50%</p>
+            <p>(Permanent)</p>
+       </div>
+
+       <div class="store" name="Prestige" cost="1000000000" onclick="prestige()">
+            <div class="widget">
+                <p style="font-size: 2em; margin-top: 10px;">✨</p>
+            </div>
+            <p>Prestige</p>
+            <p>Req: 1B sqft</p>
+            <p>Reset for a permanent boost!</p>
+            <p>(+Prestige Points)</p>
+       </div>
+
     </div>
 
 <div id="widget-container"></div>

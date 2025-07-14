@@ -28,10 +28,21 @@ const achievements = {
 let gameState = {
     score: 5,
     widgets: {},
+    boosts: {},
+    prestigePoints: 0,
+}
+
+function getPrestigeBonus() {
+    // Each prestige point gives a 2% bonus to all gains.
+    return 1 + (gameState.prestigePoints * 0.02);
 }
 
 function changeScore(amount) {
-    gameState.score += amount;
+    // Apply prestige bonus only to positive score changes (earnings)
+    if (amount > 0) {
+        amount *= getPrestigeBonus();
+    }
+    gameState.score += Math.ceil(amount); // Use Math.ceil to avoid fractional scores
     updateUI(); // Centralize all UI updates
     checkAchievements();
 }
@@ -73,46 +84,77 @@ function updateUI() {
         }
     }
 }
-function buy(store) {
-    const cost = parseInt(store.getAttribute("cost"));
 
-    // check available to buy
-    if (gameState.score < cost) return; // Exit if can't afford
+/**
+ * Creates a new widget element in the DOM based on its name.
+ * This is used for both buying new widgets and loading saved ones.
+ * @param {string} name - The name of the widget to create (e.g., "Lawn").
+ * @returns {HTMLElement|null} The created widget element or null if not found.
+ */
+function createWidgetElement(name) {
+    const storeElement = Array.from(stores).find(s => s.getAttribute("name") === name);
+    if (!storeElement) return null;
 
-    // change score
-    changeScore(-cost); // Use changeScore to keep UI in sync
-
-    if (store.getAttribute("name") === "Super-Gompei") {
-        const super_gompei = document.querySelector("#widget-container #super-gompei")?.parentElement;
-    //If Super-Gompei already exists
-        if (super_gompei) {
-            super_gompei.setAttribute("reap", (parseInt(super_gompei.getAttribute("reap")) + 100));
-            return;
-        }
-    }
-
-    // Track widget counts in our gameState
-    const name = store.getAttribute("name");
-    if (!gameState.widgets[name]) {
-        gameState.widgets[name] = 0;
-    }
-    gameState.widgets[name]++;
-
-    document.body.style.setProperty('--gompei-count', gameState.widgets['Super-Gompei'] || 0);
-
-    // clone node for widget, and add to container
-    const widget = store.firstElementChild.cloneNode(true);
-    widget.onclick = () => {
-        harvest(widget);
-    }
+    const widget = storeElement.firstElementChild.cloneNode(true);
+    widget.onclick = () => harvest(widget);
     widget_container.appendChild(widget);
-    addUpgradeability(widget); // Add upgrade functionality
+    addUpgradeability(widget);
 
     if (widget.getAttribute("auto") == 'true') {
         widget.setAttribute("harvesting", "");
         setup_end_harvest(widget);
     }
-    updateUI(); // Ensure new widget's upgrade button state is correct
+    return widget;
+}
+
+function buy(store) {
+    const cost = parseInt(store.getAttribute("cost"));
+    if (gameState.score < cost) return;
+
+    changeScore(-cost);
+
+    const name = store.getAttribute("name");
+    const itemType = store.dataset.type;
+
+    // Always track the count of items purchased
+    if (!gameState.widgets[name]) {
+        gameState.widgets[name] = 0;
+    }
+    gameState.widgets[name]++;
+
+    // Handle booster items (they don't create a physical widget)
+    if (itemType === 'booster') {
+        const target = store.dataset.boostTarget;
+        const amount = parseFloat(store.dataset.boostAmount);
+
+        if (!gameState.boosts[target]) {
+            gameState.boosts[target] = 1.0; // Base multiplier
+        }
+        gameState.boosts[target] += amount;
+
+        showNotification("Boost Purchased!", `${name} now boosts all ${target}s by an additional ${amount * 100}%!`);
+        updateUI();
+        return; // Exit after handling the boost
+    }
+
+    // Handle special upgrade logic for an existing Super-Gompei
+    if (name === "Super-Gompei") {
+        const super_gompei = document.querySelector("#widget-container #super-gompei")?.parentElement;
+        if (super_gompei) {
+            super_gompei.setAttribute("reap", (parseInt(super_gompei.getAttribute("reap")) + 100));
+            document.body.style.setProperty('--gompei-count', gameState.widgets['Super-Gompei'] || 0);
+            updateUI();
+            return;
+        }
+    }
+
+    // This part now only runs for creating NEW physical widgets
+    if (name === 'Super-Gompei') {
+        document.body.style.setProperty('--gompei-count', gameState.widgets['Super-Gompei'] || 0);
+    }
+
+    createWidgetElement(name);
+    updateUI();
 }
 
 function addUpgradeability(widget) {
@@ -158,26 +200,30 @@ function harvest(widget) {
     if (widget.hasAttribute("harvesting")) return;
     // Set harvesting flag
     widget.setAttribute("harvesting", "");
+    
+    // Calculate the score to add
+    const baseReap = parseInt(widget.getAttribute("reap"));
+    const widgetName = widget.getAttribute("name");
 
+    // Apply boost if one exists for this widget type
+    const boostMultiplier = gameState.boosts[widgetName] || 1.0;
+    const finalReap = Math.ceil(baseReap * boostMultiplier);
+    
     // If manual, collect points now
-    changeScore(parseInt(widget.getAttribute("reap")));
-    showPoint(widget);
+    changeScore(finalReap);
+    showPoint(widget, finalReap);
 
     setup_end_harvest(widget);
 }
 
 
-function showPoint(widget) {
+function showPoint(widget, points) {
     let number = document.createElement("span");
     number.className = "point";
-    number.innerHTML = "+" + widget.getAttribute("reap");
-    number.onanimationend = () => {
-        widget.removeChild(number);
-    }
+    number.innerHTML = `+${points}`;
+    number.onanimationend = () => number.remove();
     widget.appendChild(number);
 }
-
-updateUI(); // Initial call to set up the UI correctly on page load
 
 function showNotification(title, message) {
     const notification = document.createElement("div");
@@ -201,4 +247,103 @@ function checkAchievements() {
             showNotification("Achievement Unlocked!", achievement.name);
         }
     }
+}
+
+
+// --- Save/Load System ---
+
+function saveGame() {
+    try {
+        localStorage.setItem('gompeiClickerSave', JSON.stringify(gameState));
+    } catch (e) {
+        console.error("Could not save game state:", e);
+        showNotification("Error", "Could not save game progress.");
+    }
+}
+
+function loadGame() {
+    const savedStateJSON = localStorage.getItem('gompeiClickerSave');
+    if (!savedStateJSON) return; // No save file exists
+
+    try {
+        const savedState = JSON.parse(savedStateJSON);
+        // Use Object.assign to safely merge the loaded state.
+        // This prevents errors if you add new properties to the default gameState later.
+        Object.assign(gameState, savedState);
+        rebuildUIFromState();
+        showNotification("Welcome Back!", "Your progress has been loaded.");
+    } catch (e) {
+        console.error("Could not load or parse save file:", e);
+        localStorage.removeItem('gompeiClickerSave'); // Clear corrupted save data
+    }
+}
+
+/**
+ * Reconstructs the visual widgets on the screen based on the loaded gameState.
+ * Note: This system does not save individual widget upgrades (e.g., for Lawns)
+ * because that state is currently stored only in the DOM, not in gameState.
+ */
+function rebuildUIFromState() {
+    widget_container.innerHTML = ''; // Clear any default/existing widgets
+
+    for (const name in gameState.widgets) {
+        const count = gameState.widgets[name];
+        if (count === 0) continue;
+
+        if (name === 'Super-Gompei') {
+            // Super-Gompei is a single entity whose power is based on its purchase count.
+            const storeElement = Array.from(stores).find(s => s.getAttribute("name") === name);
+            if (!storeElement) continue;
+
+            const baseReap = parseInt(storeElement.getAttribute("reap"));
+            const calculatedReap = baseReap + (100 * (count - 1));
+
+            const widget = createWidgetElement(name);
+            if (widget) widget.setAttribute("reap", calculatedReap);
+            document.body.style.setProperty('--gompei-count', count);
+        } else {
+            // For other widgets, create one for each in the count.
+            for (let i = 0; i < count; i++) {
+                createWidgetElement(name);
+            }
+        }
+    }
+}
+
+loadGame(); // Load progress as soon as the script runs
+updateUI(); // Set up the UI correctly on page load
+setInterval(saveGame, 15000); // Autosave every 15 seconds
+
+function prestige() {
+    const prestigeRequirement = 1_000_000_000; // 1 billion score
+    if (gameState.score < prestigeRequirement) {
+        showNotification("Not yet!", `You need at least ${prestigeRequirement.toLocaleString()} sqft to prestige.`);
+        return;
+    }
+
+    // This formula can be adjusted for balance. e.g., Math.floor(Math.cbrt(gameState.score / 1e9))
+    const pointsGained = Math.floor(Math.sqrt(gameState.score / prestigeRequirement));
+    if (pointsGained < 1) {
+        showNotification("Not enough!", `You need more score to gain at least 1 prestige point.`);
+        return;
+    }
+
+    // Reset the game state
+    gameState.score = 5;
+    gameState.widgets = {};
+    gameState.boosts = {};
+    gameState.prestigePoints += pointsGained;
+
+    // Reset the UI
+    widget_container.innerHTML = ''; // Clear all widgets
+    document.body.style.setProperty('--gompei-count', 0);
+
+    // Reset achievements
+    for (const key in achievements) {
+        achievements[key].unlocked = false;
+    }
+
+    const bonusPercent = (getPrestigeBonus() - 1) * 100;
+    showNotification("Rebirth!", `You prestiged for ${pointsGained} point(s). All future gains are now boosted by ${bonusPercent.toFixed(0)}%!`);
+    updateUI();
 }
