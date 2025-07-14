@@ -38,7 +38,7 @@ function changeScore(amount) {
 
 function updateUI() {
     // Update score element
-    score_element.innerHTML = "Score: " + gameState.score;
+    score_element.innerHTML = "Score: " + gameState.score.toLocaleString();
 
     // Update store availability
     for (let store of stores) {
