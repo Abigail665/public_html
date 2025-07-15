@@ -250,34 +250,6 @@ function checkAchievements() {
 }
 
 
-// --- Save/Load System ---
-
-function saveGame() {
-    try {
-        localStorage.setItem('gompeiClickerSave', JSON.stringify(gameState));
-    } catch (e) {
-        console.error("Could not save game state:", e);
-        showNotification("Error", "Could not save game progress.");
-    }
-}
-
-function loadGame() {
-    const savedStateJSON = localStorage.getItem('gompeiClickerSave');
-    if (!savedStateJSON) return; // No save file exists
-
-    try {
-        const savedState = JSON.parse(savedStateJSON);
-        // Use Object.assign to safely merge the loaded state.
-        // This prevents errors if you add new properties to the default gameState later.
-        Object.assign(gameState, savedState);
-        rebuildUIFromState();
-        showNotification("Welcome Back!", "Your progress has been loaded.");
-    } catch (e) {
-        console.error("Could not load or parse save file:", e);
-        localStorage.removeItem('gompeiClickerSave'); // Clear corrupted save data
-    }
-}
-
 /**
  * Reconstructs the visual widgets on the screen based on the loaded gameState.
  * Note: This system does not save individual widget upgrades (e.g., for Lawns)

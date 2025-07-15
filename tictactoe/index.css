@@ -1,0 +1,29 @@
+#container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    aspect-ratio: 1/1;
+    width: 75vh;
+    border: 1px, solid #b0a2a7;
+    background-color: #33080a;
+}
+
+.cell{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    font-size: 10em;
+    border: 1px, solid #b0a2a7;
+    color: #715d63;
+}
+
+body {
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    height: 100vh;
+    background-color: #160909;
+}
+
+.cssisbad {
+    line-height: 0;
+}
