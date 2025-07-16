@@ -1,0 +1,40 @@
+
+
+#gambuttons {
+	width: 180px ;
+	max-width: 100% ;
+	text-align: center ;
+}
+#gambuttons ul {
+	margin-top: 5em ;
+	padding: 0 ;
+	list-style: none ;
+}
+#gambuttons li {
+	margin: 0 0 10px 0 ; /* Add some space between the buttons */
+	padding: 0 ;
+	display: block ;
+	list-style: none;
+	font-family: 'Courier New', Courier, monospace;
+}
+#gambuttons li a {
+	color: #bedbd3; /* Change text to white for better contrast */
+	background-color: #688777 ;
+	border: 1px solid #0d3021; /* Use a more subtle, solid border */
+	text-decoration: none ;
+	display: block ;
+	padding: 20px 0; /* Add some vertical padding for a taller button */
+	border-radius: 25px; /* This is the magic property for rounded corners! */
+	transition: background-color 0.3s; /* Add a smooth transition for the hover effect */
+}
+#gambuttons li a:hover {
+	color: #8aaca0;
+	background-color: #406250; /* Lighten the button on hover for a clear effect */
+}
+
+.gamh3 {
+    font-family:'Courier New', Courier, monospace;
+    color: #000;
+    font-weight: bold;
+    font-style: italic;
+}
