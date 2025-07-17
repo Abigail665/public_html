@@ -125,34 +125,33 @@ class AiCookAPP {
         `;
 
 
-        // const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${this.apiKey}`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type' : 'application/json',
-        //     },
-        //     body: JSON.stringify ({
-        //         contents: [{
-        //             parts: [{
-        //                 text: prompt
-        //             }]
-        //         }],
-        //         generationConfig: {
-        //             temperature: 0.7,
-        //             maxOutputTokens: 2048,
-        //             topP: 0.95,
-        //             topK: 40,
-        //         },
-        //     })
-        // });
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${this.apiKey}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/json',
+            },
+            body: JSON.stringify ({
+                contents: [{
+                    parts: [{
+                        text: prompt
+                    }]
+                }],
+                generationConfig: {
+                    temperature: 0.7,
+                    maxOutputTokens: 2048,
+                    topP: 0.95,
+                    topK: 40,
+                },
+            })
+        });
 
-         if (!response.ok) {
-             const errorData = await response.json();
-             throw new Error(`HTTP error! status: ${errorData.error?.message || 'Unknown error'}`);
-         }
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(`HTTP error! status: ${errorData.error?.message || 'Unknown error'}`);
+        }
 
         const data = await response.json();
-        const recipeText = data.candidates[0].content.parts[0].text.trim();
-        return
+        return data.candidates[0].content.parts[0].text.trim();
         
 
     }
@@ -165,13 +164,7 @@ class AiCookAPP {
 
     formatRecipe(text) {
         // Replace newline characters with <br> tags for HTML rendering.
-        text.replace(/(^| ) +/gm,'$1')
-        text.replace(/^- */gm, '')
-        text.replace(/(\*\*(.+?)\*\*) +/gm, '<strong>$1</strong>')
-        text.replace(/^(.+)/g, '<h3 class"recipe-title">$1</h3>')
-        text.replace(/^\*/gm, '⦁')
-        text.replace(/^(.+)/gm, '<p>$1</p>')
-        return text;
+        return text.replace(/\n/g, '<br>');
     }
 
     showRecipe() {
@@ -199,23 +192,9 @@ class AiCookAPP {
         this.recipeSection.classList.remove('show');
     }
 
-    showError() {
-        alert('Error! Please check your input and try again.');
-        }
-        // init() {
-        // console.log("AICookApp initialized");
-        // // Additional initialization code can go here
-        // }
-
-        // startCooking() {
-        // console.log("Starting the cooking process...");
-        // // Logic to start cooking can be added here
-        // }
-        
-        // stopCooking() {
-        // console.log("Stopping the cooking process...");
-        // // Logic to stop cooking can be added here
-        // }
+    showError(message) {
+        alert(message);
+    }
 
 }
 
