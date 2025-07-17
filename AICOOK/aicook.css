@@ -6,11 +6,11 @@
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background: linear gradient (135deg, #667eea 0%, #764ba2 100%);
+    background: linear gradient (135deg, #667eea 25%, #764ba2 75%);
     min-height: 100vh;
     color:#333;
 }
-
+ 
 .container {
     width: 800px;
     margin: 0 auto;
